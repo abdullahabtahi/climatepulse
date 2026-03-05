@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import StatusStrip from './StatusStrip'
+import { AceternityGlobe } from './AceternityGlobe'
+import { Button } from './ui/button'
 
 export default function HeroSection() {
     const sectionRef = useRef<HTMLElement>(null)
@@ -9,7 +11,7 @@ export default function HeroSection() {
         offset: ['start start', 'end start']
     })
 
-    const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+    const yGlobe = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
     const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
 
     const containerVariants = {
@@ -26,73 +28,79 @@ export default function HeroSection() {
     }
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-end overflow-hidden">
-            {/* Background image — hero scene */}
-            <motion.div style={{ y: imageY }} className="absolute inset-0 z-0">
-                <img
-                    src="/assets/hero-scene.png"
-                    alt="A young person stands in a Southeast Asian urban alley beside rising floodwater"
-                    className="w-full h-full object-cover object-center scale-105"
-                    loading="eager"
-                />
-                {/* Dark gradient overlay — bottom-heavy */}
-                <div className="absolute inset-0 bg-gradient-to-t from-pulse-deep via-pulse-deep/60 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-pulse-deep/30 to-transparent" />
+        <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-pulse-deep">
+            {/* Background elements */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pulse-deep via-pulse-deep-dark to-pulse-deep z-0" />
+
+            {/* Globe - positioned to the right on large screens */}
+            <motion.div style={{ y: yGlobe }} className="absolute -right-[40%] md:-right-[10%] top-[10%] md:top-[15%] w-[180%] md:w-[85%] opacity-70 z-0 mix-blend-screen pointer-events-auto">
+                <AceternityGlobe />
             </motion.div>
 
             {/* Content */}
-            <motion.div style={{ y: contentY }} className="relative z-10 max-w-6xl mx-auto px-6 pb-24 pt-32 w-full">
-                {/* Eyebrow */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-8"
-                >
-                    <span className="w-2 h-2 rounded-full bg-pulse-ochre animate-pulse-glow" />
-                    <span className="text-white/90 text-sm font-medium font-sans">
-                        Social Impact Catalyst Fellowship
-                    </span>
-                </motion.div>
+            <motion.div style={{ y: contentY }} className="relative z-10 max-w-7xl mx-auto px-6 pb-24 pt-32 md:pt-40 w-full">
+                <div className="max-w-3xl">
+                    {/* Eyebrow */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-8"
+                    >
+                        <span className="text-pulse-teal">🌏</span>
+                        <span className="text-white/90 text-xs md:text-sm font-medium font-sans uppercase tracking-widest">
+                            ASEAN · Pilot Q3 2026
+                        </span>
+                    </motion.div>
 
-                {/* Headline — emotional hook, no product claim */}
-                <motion.h1
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
-                    className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight max-w-4xl mb-6"
-                >
-                    {`When the flood came, nobody told Mae which street to evacuate.`.split(' ').map((word, i) => (
-                        <motion.span
-                            key={i}
-                            variants={wordVariants}
-                            className="inline-block mr-[0.3em]"
-                        >
-                            {word}
-                        </motion.span>
-                    ))}
-                </motion.h1>
+                    {/* Headline — emotional hook, no product claim */}
+                    <motion.h1
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                        className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white leading-[1.05] tracking-tight mb-8"
+                    >
+                        {`When the flood came, nobody told Mae which street to evacuate.`.split(' ').map((word, i) => (
+                            <motion.span
+                                key={i}
+                                variants={wordVariants}
+                                className="inline-block mr-[0.25em]"
+                            >
+                                {word}
+                            </motion.span>
+                        ))}
+                    </motion.h1>
 
-                {/* Sub-text — ASEAN scope */}
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                    className="font-sans text-white/70 text-xl md:text-2xl max-w-2xl leading-relaxed"
-                >
-                    Every year, 150 million people across Southeast Asia face climate events with warnings that never reach their street.
-                </motion.p>
+                    {/* Sub-text — ASEAN scope */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.8 }}
+                        className="font-sans text-white/70 text-lg md:text-2xl max-w-2xl leading-relaxed mb-10"
+                    >
+                        Every year, 150 million people across Southeast Asia face climate events with warnings that never reach their street. We are building the ground-truth intelligence layer to fix the last-mile gap.
+                    </motion.p>
+
+                    {/* CTA */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.2, duration: 0.8 }}
+                        className="flex flex-wrap gap-4"
+                    >
+                        <Button size="lg" className="rounded-full text-base font-semibold px-8 h-14 bg-pulse-teal text-white hover:bg-white hover:text-pulse-deep transition-colors shadow-lg shadow-pulse-teal/20">
+                            Request Early Access
+                        </Button>
+                        <Button size="lg" variant="outline" className="rounded-full text-base font-semibold px-8 h-14 text-white border-white/20 hover:bg-white/10 hover:text-white backdrop-blur-md">
+                            Explore Solutions
+                        </Button>
+                    </motion.div>
+                </div>
             </motion.div>
 
-            {/* Live pilot status strip — heartbeat monitor */}
-            <div className="relative z-10">
+            {/* Live pilot status strip */}
+            <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/10 bg-pulse-deep/50 backdrop-blur-md">
                 <StatusStrip />
-            </div>
-
-            {/* Scroll cue */}
-            <div className="absolute bottom-36 right-8 z-10 hidden md:flex flex-col items-center gap-2 text-white/40">
-                <span className="text-xs font-sans rotate-90 tracking-widest uppercase">Scroll</span>
-                <div className="w-px h-12 bg-white/20" />
             </div>
         </section>
     )

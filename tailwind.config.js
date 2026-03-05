@@ -9,14 +9,16 @@ export default {
         extend: {
             colors: {
                 // ClimatePulse brand tokens
-                'pulse-deep': '#062B21',
-                'pulse-teal': '#0FA87E',
-                'pulse-teal-light': '#2E8B57',
-                'pulse-ochre': '#E8A030',
-                'pulse-mist': '#F0FFF4',
-                'pulse-slate': '#6B8F8A',
+                'pulse-deep': '#0A1628',
+                'pulse-deep-dark': '#0D2E1A',
+                'pulse-teal': '#00C896',
+                'pulse-teal-light': '#34D399',
+                'pulse-ochre': '#F5A623',
+                'pulse-mist': '#F8FAFB',
+                'pulse-slate': '#4A6480',
                 'pulse-charcoal': '#1A1A2E',
-                'pulse-text': '#1A3320',
+                'pulse-text': '#0F1B2D',
+                'pulse-red': '#E84040',
                 // shadcn compatibility
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
@@ -41,8 +43,9 @@ export default {
                 },
             },
             fontFamily: {
-                sans: ['DM Sans', 'system-ui', 'sans-serif'],
-                display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+                display: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+                mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
             },
             borderRadius: {
                 lg: "var(--radius)",

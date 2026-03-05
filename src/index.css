@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 138 100% 97%;
+    --foreground: 153 59% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 153 59% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 153 59% 16%;
+    --primary: 161 83% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 138 30% 94%;
+    --secondary-foreground: 153 59% 16%;
+    --muted: 138 30% 94%;
+    --muted-foreground: 168 14% 48%;
+    --accent: 138 30% 94%;
+    --accent-foreground: 153 59% 16%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 138 20% 88%;
+    --input: 138 20% 88%;
+    --ring: 161 83% 36%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-pulse-mist text-pulse-text font-sans antialiased;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-pulse-deep;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Hero word entrance animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Heartbeat strip animation */
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 600;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.heartbeat-path {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: drawLine 3s linear infinite;
+}
+
+/* Smooth section entrances */
+.section-enter {
+  @apply opacity-0 translate-y-8;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-enter.visible {
+  @apply opacity-100 translate-y-0;
+}
+
+/* Phone mockup */
+.phone-frame {
+  width: 280px;
+  height: 560px;
+  border-radius: 36px;
+  border: 6px solid #1A1A2E;
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(26, 26, 46, 0.08),
+    0 24px 64px -12px rgba(6, 43, 33, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.phone-notch {
+  width: 100px;
+  height: 24px;
+  background: #1A1A2E;
+  border-radius: 0 0 16px 16px;
+  margin: 0 auto;
+}
+
+/* Stat counter animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-number {
+  animation: countUp 0.8s ease-out forwards;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Gap diagram */
+.gap-arrow {
+  stroke-dasharray: 8 4;
+  animation: dashMove 1s linear infinite;
+}
+
+@keyframes dashMove {
+  to {
+    stroke-dashoffset: -12;
+  }
+}

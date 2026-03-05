@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useInView } from 'framer-motion'
 import GapDiagram from './GapDiagram'
 import { citations } from '@/data/citations'
 
@@ -61,16 +62,7 @@ function StatCard({ stat, active }: { stat: typeof stats[0]; active: boolean }) 
 
 export default function ProblemSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
-    const [visible, setVisible] = useState(false)
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-            { threshold: 0.2 }
-        )
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
-    }, [])
+    const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 px-6 bg-pulse-mist">
@@ -88,14 +80,28 @@ export default function ProblemSection() {
                 </div>
 
                 {/* Gap diagram */}
-                <div className="mb-20">
-                    <GapDiagram visible={visible} />
-                </div>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-20"
+                >
+                    <GapDiagram visible={isInView} />
+                </motion.div>
 
                 {/* Stat cards */}
                 <div className="grid md:grid-cols-3 gap-6 mb-20">
-                    {stats.map((stat) => (
-                        <StatCard key={stat.id} stat={stat} active={visible} />
+                    {stats.map((stat, i) => (
+                        <motion.div
+                            key={stat.id}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: i * 0.1 }}
+                        >
+                            <StatCard stat={stat} active={isInView} />
+                        </motion.div>
                     ))}
                 </div>
 

@@ -1,18 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import PhoneMockup from './PhoneMockup'
 
 export default function PrototypeSection() {
-    const sectionRef = useRef<HTMLDivElement>(null)
-    const [visible, setVisible] = useState(false)
+    const sectionRef = useRef<HTMLElement>(null)
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ['start end', 'center center']
+    })
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-            { threshold: 0.15 }
-        )
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
-    }, [])
+    const phoneY = useTransform(scrollYProgress, [0, 1], [100, 0])
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 px-6 bg-white relative overflow-hidden">
@@ -22,9 +19,11 @@ export default function PrototypeSection() {
             <div className="max-w-6xl mx-auto relative z-10">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     {/* Left: copy */}
-                    <div
-                        className={`transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                            }`}
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, type: "spring" }}
                     >
                         <div className="inline-flex items-center gap-2 bg-pulse-teal/10 border border-pulse-teal/20 rounded-full px-4 py-1.5 mb-6">
                             <span className="text-pulse-teal text-sm">⚡</span>
@@ -67,15 +66,19 @@ export default function PrototypeSection() {
                                 That's all it takes to turn a street-level observation into a verified, actionable climate report.
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Right: phone mockup */}
-                    <div
-                        className={`flex justify-center transition-all duration-700 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                            }`}
+                    <motion.div
+                        style={{ y: phoneY }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8 }}
+                        className="flex justify-center"
                     >
                         <PhoneMockup />
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

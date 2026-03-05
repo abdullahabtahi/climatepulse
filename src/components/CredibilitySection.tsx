@@ -1,18 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { useInView } from 'framer-motion'
 import CompareChart from './CompareChart'
 
 export default function CredibilitySection() {
     const sectionRef = useRef<HTMLDivElement>(null)
-    const [visible, setVisible] = useState(false)
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-            { threshold: 0.2 }
-        )
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
-    }, [])
+    const visible = useInView(sectionRef, { once: true, amount: 0.2 })
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 px-6 bg-pulse-mist">

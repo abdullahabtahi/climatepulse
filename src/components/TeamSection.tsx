@@ -1,5 +1,6 @@
 import { teamMembers } from '@/data/team'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { useInView } from 'framer-motion'
 
 // Country flag SVG paths (simplified)
 const flags: Record<string, string> = {
@@ -15,16 +16,7 @@ const flags: Record<string, string> = {
 
 export default function TeamSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
-    const [visible, setVisible] = useState(false)
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-            { threshold: 0.15 }
-        )
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
-    }, [])
+    const visible = useInView(sectionRef, { once: true, amount: 0.15 })
 
     return (
         <section ref={sectionRef} className="py-24 md:py-32 px-6 bg-white">
